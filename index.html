@@ -1,0 +1,173 @@
+<script>
+// ===============================
+// DATA KERANJANG
+// ===============================
+let totalItem = 0;
+let daftarBelanja = [];
+
+// ===============================
+// MEMBUAT ELEMEN KERANJANG
+// ===============================
+const produkSection = document.querySelector("#produk");
+
+const keranjangBox = document.createElement("div");
+keranjangBox.style.marginTop = "30px";
+keranjangBox.style.padding = "20px";
+keranjangBox.style.background = "#ecfdf5";
+keranjangBox.style.borderRadius = "12px";
+keranjangBox.style.width = "90%";
+keranjangBox.style.marginInline = "auto";
+
+keranjangBox.innerHTML = `
+  <h3>🛒 Keranjang Belanja</h3>
+  <p id="jumlah-item">Belum ada produk</p>
+  <ul id="list-belanja" style="margin-top:10px;"></ul>
+`;
+
+produkSection.appendChild(keranjangBox);
+
+// ===============================
+// FITUR TAMBAH PRODUK
+// ===============================
+const tombolTambah = document.querySelectorAll("table button");
+
+tombolTambah.forEach((btn) => {
+  btn.addEventListener("click", function() {
+
+    const row = btn.parentElement.parentElement;
+
+    const namaProduk = row.children[0].innerText;
+    const hargaProduk = row.children[2].innerText;
+
+    totalItem++;
+
+    daftarBelanja.push({
+      nama: namaProduk,
+      harga: hargaProduk
+    });
+
+    updateKeranjang();
+
+    alert(namaProduk + " berhasil ditambahkan!");
+  });
+});
+
+// ===============================
+// UPDATE KERANJANG
+// ===============================
+function updateKeranjang() {
+
+  const jumlahItem = document.getElementById("jumlah-item");
+  const listBelanja = document.getElementById("list-belanja");
+
+  jumlahItem.innerText = "Total Item: " + totalItem;
+
+  listBelanja.innerHTML = "";
+
+  daftarBelanja.forEach((item) => {
+
+    const li = document.createElement("li");
+
+    li.style.marginBottom = "8px";
+
+    li.innerText = item.nama + " - " + item.harga;
+
+    listBelanja.appendChild(li);
+  });
+}
+
+// ===============================
+// SMOOTH SCROLL NAVBAR
+// ===============================
+const navLinks = document.querySelectorAll("nav a");
+
+navLinks.forEach(link => {
+
+  link.addEventListener("click", function(e) {
+
+    e.preventDefault();
+
+    const targetId = this.getAttribute("href");
+
+    const targetSection = document.querySelector(targetId);
+
+    targetSection.scrollIntoView({
+      behavior: "smooth"
+    });
+
+  });
+
+});
+
+// ===============================
+// VALIDASI FORM
+// ===============================
+const form = document.querySelector("form");
+
+form.addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  const inputs = form.querySelectorAll("input, textarea");
+
+  const nama = inputs[0].value.trim();
+  const wa = inputs[1].value.trim();
+  const pesan = inputs[2].value.trim();
+
+  if(nama === "" || wa === "" || pesan === "") {
+
+    alert("Semua field wajib diisi!");
+
+    return;
+  }
+
+  if(wa.length < 10) {
+
+    alert("Nomor WhatsApp tidak valid!");
+
+    return;
+  }
+
+  alert("Pesan berhasil dikirim! 📩");
+
+  form.reset();
+
+});
+
+// ===============================
+// EFEK NAVBAR SAAT SCROLL
+// ===============================
+const navbar = document.querySelector("nav");
+
+window.addEventListener("scroll", function() {
+
+  if(window.scrollY > 50) {
+
+    navbar.style.boxShadow = "0 2px 10px rgba(0,0,0,0.2)";
+
+  } else {
+
+    navbar.style.boxShadow = "none";
+
+  }
+
+});
+
+// ===============================
+// TOMBOL BELANJA SEKARANG
+// ===============================
+const tombolBelanja = document.querySelector("#beranda a");
+
+tombolBelanja.addEventListener("mouseenter", function() {
+
+  tombolBelanja.style.transform = "scale(1.05)";
+  tombolBelanja.style.transition = "0.3s";
+
+});
+
+tombolBelanja.addEventListener("mouseleave", function() {
+
+  tombolBelanja.style.transform = "scale(1)";
+
+});
+</script>
